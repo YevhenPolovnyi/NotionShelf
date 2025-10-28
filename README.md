@@ -30,7 +30,7 @@ A Terminal User Interface (TUI) application that allows you to browse local EPUB
 1. Clone this repository:
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:YevhenPolovnyi/NotionShelf.git
 cd NotionShelf
 ```
 
