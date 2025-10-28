@@ -1,0 +1,19 @@
+[package]
+name = "notion-shelf"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ratatui = "0.29"
+crossterm = "0.29"
+dotenv = "0.15"
+epub = "2.1"
+ratatui-image = "8.0"
+reqwest = { version = "0.12.24", features = ["json", "multipart"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.48.0", features = ["full"] }
+anyhow = "1.0"
+color-eyre = "0.6"
+image = "0.25"
+base64 = "0.22"
