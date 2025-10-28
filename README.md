@@ -1,3 +1,6 @@
+This is the capstone project for [Rust Language UA Camp](https://github.com/rust-lang-ua/rustcamp).
+![NotionShelf Demo](https://github.com/user-attachments/assets/your-screenshot-id)
+
 # NotionShelf
 
 A Terminal User Interface (TUI) application that allows you to browse local EPUB files and add them as pages to a Notion database.
@@ -40,45 +43,40 @@ cargo build --release
 
    To run NotionShelf from any directory, add an alias to your shell configuration:
 
-   **For Fish shell:**
+   **Using a wrapper script (recommended):**
 
    ```bash
-   # Add to ~/.config/fish/config.fish
-   echo "alias ns='cd $PWD && cargo run --release'" >> ~/.config/fish/config.fish
+   # Create a wrapper script with the absolute path to your project
+   # For Fish shell users, use printf instead of cat with heredoc:
+   printf '#!/bin/bash\ncd "%s" && exec ./target/release/notion-shelf\n' "$PWD" | sudo tee /usr/local/bin/ns > /dev/null
 
-   # Or add a function for more flexibility:
-   echo "function ns
-       set -l original_dir (pwd)
-       cd $PWD
-       cargo run --release
-       cd \$original_dir
-   end" >> ~/.config/fish/config.fish
-
-   # Reload configuration
-   source ~/.config/fish/config.fish
+   # Make it executable
+   sudo chmod +x /usr/local/bin/ns
    ```
 
-   **For Bash/Zsh:**
+   **Alternative: Shell function (Fish):**
+
+   ```fish
+   # Add to ~/.config/fish/config.fish
+   function ns
+       set -l original_dir (pwd)
+       cd /path/to/NotionShelf
+       cargo run --release
+       cd $original_dir
+   end
+   funcsave ns
+   ```
+
+   **Alternative: Shell function (Bash/Zsh):**
 
    ```bash
    # Add to ~/.bashrc or ~/.zshrc
-   echo "alias ns='(cd $PWD && cargo run --release)'" >> ~/.zshrc
-
-   # Reload configuration
-   source ~/.zshrc  # or source ~/.bashrc
+   ns() {
+       (cd /path/to/NotionShelf && cargo run --release)
+   }
    ```
 
-   **Using the binary directly (recommended for better performance):**
-
-   ```bash
-   # Create a symlink to the binary in your PATH
-   sudo ln -s $PWD/target/release/notion-shelf /usr/local/bin/ns
-
-   # Now you can run from anywhere:
-   # ns
-   ```
-
-   After setting up the alias or symlink, you can run `ns` from any directory!
+   **Note:** The application needs to run from the project directory because it reads the `.env` file. The wrapper script or function will automatically change to the project directory and run the app.
 
 ## Configuration
 

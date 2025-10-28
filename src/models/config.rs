@@ -71,9 +71,27 @@ impl Config {
     /// ```
     pub fn load() -> Result<Self> {
         // Load environment variables from .env file
-        dotenv::dotenv().context(
-            "❌ Failed to load .env file. Make sure the file exists in the project root directory.",
-        )?;
+        // Try to find .env in the current directory first, then in the executable's directory
+        let env_result = dotenv::dotenv();
+
+        if env_result.is_err() {
+            // If .env not found in current directory, try the executable's directory
+            if let Ok(exe_path) = std::env::current_exe() {
+                if let Some(exe_dir) = exe_path.parent() {
+                    let env_file = exe_dir.join(".env");
+                    if env_file.exists() {
+                        dotenv::from_path(&env_file).ok();
+                    }
+                }
+            }
+        }
+
+        // Verify that the .env file was loaded successfully
+        if std::env::var("NOTION_API_KEY").is_err() {
+            return Err(color_eyre::eyre::eyre!(
+                "❌ Failed to load .env file. Make sure the file exists in the project root directory."
+            ));
+        }
 
         // Load and validate Notion API key
         let notion_api_key = std::env::var("NOTION_API_KEY")
