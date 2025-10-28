@@ -1,5 +1,6 @@
 This is the capstone project for [Rust Language UA Camp](https://github.com/rust-lang-ua/rustcamp).
-![NotionShelf Demo](https://github.com/user-attachments/assets/your-screenshot-id)
+
+![NotionShelf Demo](assets/demo.png)
 
 # NotionShelf
 
